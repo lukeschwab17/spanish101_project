@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+<head>
+    <meta charset="UTF-8" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></link>
+    <link src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></link>
+    <title>Tiempo Libre En La Universidad</title>
+</head>
+
+<body>
+<nav class="navbar-expand-lg">
+<nav class="navbar navbar-light bg-success navbar-expand-lg sticky-top" style="margin-left: auto">
+
+  <div class="container-fluid">
+    <ul class="navbar-nav mr-auto">
+    <li class="nav-item" style="font-weight: bold">
+        <a class="nav-link" style="color: white" href="{{ url_for('about_us') }}">
+            <img src="/static/logo.png" alt="Logo, URL to 'About Us'" style="display: flex; max-width: 10vh">
+        </a>
+    </li>
+    {% if session.user_id %}
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('home') }}">My Expenses</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('new_expense') }}">Add Expense</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('get_options') }}">Options</a>
+      </li>
+    {% endif %}
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      {% if not session.user_id %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('login') }}">Log In</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('create_account') }}">Create Account</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+</nav>
+
+<div>
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} " role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+</div>
+
+{% block body %}
+{% endblock %}
+
+<br>
+
+<br>
+
+<footer class="mt-auto text-center text-sm-start text-dark" style="background-color: #ECEFF1;">
+
+    <!-- Dummy Section: Green Strip. -->
+    <section class="d-flex bg-success justify-content-between p-4 text-white">
+    </section>
+
+    <section class="">
+      <div class="container text-center text-md-start mt-5">
+        <div class="row mt-3">
+          <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+            <h6 class="text-uppercase fw-bold">Spendr</h6>
+            <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px"/>
+            <p>
+                Your go-to expense tracker.
+            </p>
+          </div>
+          <!-- Grid column -->
+          <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+            <!-- Links -->
+            <h6 class="text-uppercase fw-bold">Useful links</h6>
+            <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px"/>
+            <br>
+            <p>
+              <a href="{{url_for('about_us')}}" class="text-dark">About Us</a>
+            </p>
+          </div>
+          <!-- Grid column -->
+          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+            <h6 class="text-uppercase fw-bold">Contact Us</h6>
+            <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px"/>
+            <p><i class="fas fa-home mr-3"></i> Illinois Wesleyan University, Bloomington, IL - 61701</p>
+            <p><i class="fas fa-envelope mr-3"></i> spendr@proweb.com </p>
+            <p><i class="fas fa-phone mr-3"></i> + 01 234 567 80</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+      © 2024 Copyright: <a class="text-dark" href="https://lukeschwab17.github.io/cs253_pro_web_company/">Pro-Web Company</a>
+    </div>
+  </footer>
+
+<script>
+    /**
+     Function to set the minimum and maximum allowed dates for input[type="date"] elements.
+     This function sets the minimum date to January 1st of the current year minus 20 years,
+     and the maximum date to December 31st of the current year.
+    **/
+    function setMinMaxDate() {
+        // Get the current date.
+        let currentDate = new Date();
+        let currentYear = currentDate.getFullYear();
+
+        // Calculate the minimum year (20 years ago from the current year).
+        let minYear = currentYear - 20;
+
+        // Retrieve all input elements of type 'date'.
+        let dateInputs = document.querySelectorAll('input[type="date"]');
+
+        // Set the minimum and maximum date attributes for each date input.
+        dateInputs.forEach(function(input) {
+            input.min = minYear + "-01-01"; // Set minimum date to January 1st, 20 years ago
+            input.max = currentYear + "-12-31"; // Set maximum date to December 31st of the current year
+        });
+    }
+    
+    // Execute the setMinMaxDate function when the document is fully loaded.
+    document.addEventListener("DOMContentLoaded", function() {
+        setMinMaxDate();
+    });
+</script>
+</body>
+</html>
